@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Yandex Games Analytics</title>
+	<link rel="stylesheet" href="./styles/loading.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet">
+	<style type="text/css">
+		* {
+			background-color: #182433;
+		}
+
+		#src-to-game {
+			text-decoration: none;
+		}
+
+		#header-text {
+			margin-left: 5px;
+			color: #ffffff;
+			font-family: "Inter", sans-serif;
+			font-optical-sizing: auto;
+			font-weight: 500;
+			font-style: normal;
+			font-variation-settings: "slnt" 0;
+		}
+
+		#title-text {
+			margin-left: 10px;
+			color: #ffffff;
+			font-family: "Inter", sans-serif;
+			font-optical-sizing: auto;
+			font-weight: 500;
+			font-style: normal;
+			font-variation-settings: "slnt" 0;
+		}
+
+		#flex-box-list-element {
+			display: flex;
+			flex-direction: row;
+		}
+
+		#list-of-games {
+			margin-left: 10px;
+			list-style: none;
+		}
+	</style>
+</head>
+
+<body>
+	<h1 id="header-text">List of the games. Page 0</h1>
+	<p></p>
+	<ul id="list-of-games">
+		<h1 id="loading">Loading &#8230;</h1>
+	</ul>
+</body>
+
+<script>
+	let page = {{page}}
+
+	let headerText = document.getElementById("header-text");
+
+	headerText.innerHTML = `List of the games. Page ${page}`
+
+	fetch(`/get_list_of_names?page=${page}`)
+	  .then((response) => {
+	    return response.json();
+	  })
+	  .then((data) => {
+	  	let listOfGames = document.getElementById("list-of-games");
+	  	listOfGames.innerHTML = ""
+	    for (const [key, value] of Object.entries(data)) {
+	    	listOfGames.innerHTML += `<li>
+	    		<div id="flex-box-list-element">
+	    			<a href="/game/${value["id"]}" id="src-to-game"> <img src="${value["img"]}" width=50px> </a>
+	    			<a href="/game/${value["id"]}" id="src-to-game"> <h4 id="title-text">${key}</h4> </a>
+	    		</div>
+	    	</li>`
+	    }
+	  });
+
+</script>
+
+</html> 

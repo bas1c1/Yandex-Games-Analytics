@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Yandex Games Analytics</title>
+	<link rel="stylesheet" href="../styles/loading.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet">
+	<style type="text/css">
+		* {
+			background-color: #182433;
+		}
+		#simple-text {
+			flex-grow: 1;
+			color: #ffffff;
+			font-family: "Inter", sans-serif;
+			font-optical-sizing: auto;
+			font-weight: 500;
+			font-style: normal;
+			font-variation-settings: "slnt" 0;
+		}
+		#game-analysis {
+			display:flex;
+			flex-direction: column;
+			justify-content: center;
+			align-content: center;
+			align-items: center;
+		}
+	</style>
+</head>
+<body>
+	<div id="game-analysis">
+		<h1 id="loading">Loading &#8230;</h1>
+	</div>
+</body>
+
+<script>
+	let id = {{id}}
+	fetch(`/get_info_by_id?id=${id}`)
+	  .then((response) => {
+	    return response.json();
+	  })
+	  .then((data) => {
+	  	let gameAnalysisDiv = document.getElementById("game-analysis");
+	  	gameAnalysisDiv.innerHTML = ""
+	    for (const [key, value] of Object.entries(data)) {
+	    	gameAnalysisDiv.innerHTML += `
+	    		<img src=${value["img"]} width=100px>
+
+	    		<p></p>
+
+	    		<h1 id="simple-text">${key}</h1>
+	   
+	    		<h3 id="simple-text">Score: ${value["score"]}</h3>
+	    		<h3 id="simple-text">Rating: ${value["rating"]}</h3>
+	    	`
+	    }
+	  });
+</script>
+</html>
